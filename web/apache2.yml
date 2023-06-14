@@ -1,0 +1,47 @@
+---
+- name: Copy apache2 config
+  ansible.builtin.copy:
+    src: apache2/
+    dest: /etc/apache2/
+    mode: '0644'
+    owner: root
+    group: root
+
+# https://gitlab.com/apparmor/apparmor/-/wikis/mod_apparmor
+# https://gitlab.com/apparmor/apparmor/-/wikis/mod_apparmor_example
+
+- name: Copy apache2 apparmor profile
+  ansible.builtin.copy:
+    src: apparmor.d/usr.sbin.apache2
+    dest: /etc/apparmor.d/usr.sbin.apache2
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Copy apache2 apparmor subprofiles
+  ansible.builtin.copy:
+    src: apparmor.d/apache2.d/
+    dest: /etc/apparmor.d/apache2.d/
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Configure apache2 modules
+  ansible.builtin.shell: |
+    a2enmod headers
+    a2dismod mpm_event
+    a2enmod mpm_prefork
+    a2enmod apparmor
+
+- name: Enforce apache2 aa profile
+  ansible.builtin.command:
+    cmd: aa-enforce /etc/apparmor.d/usr.sbin.apache2
+
+- name: Reload apache2 aa profile
+  ansible.builtin.command:
+    cmd: apparmor_parser -r /etc/apparmor.d/usr.sbin.apache2
+
+- name: Restart apache2 service
+  ansible.builtin.service:
+    name: apache2
+    state: restarted

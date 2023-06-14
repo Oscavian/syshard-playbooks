@@ -1,0 +1,9 @@
+# todo: 
+# adjust hat to web application
+
+^samplewebsite flags=(complain) {
+    include <abstractions/apache2-common>
+    /var/www/html/             rw,
+    /var/www/html/**           rw,
+    /var/log/apache2/*.log     w,
+}

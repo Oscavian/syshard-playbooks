@@ -1,0 +1,9 @@
+- name: Copy php config
+  ansible.builtin.copy:
+    src: php/
+    dest: /etc/php/
+    owner: root
+    group: root
+    mode: '0644'
+
+# todo
