@@ -1,0 +1,63 @@
+- name: Set SSH KexAlgorithms
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    line: 'KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256'
+
+- name: Set SSH Ciphers
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    line: 'Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
+
+- name: Set SSH MACs
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    line: 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com'
+
+- name: Set SSH loglevel to verbose
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#LogLevel INFO'
+    line: 'LogLevel VERBOSE'
+
+- name: Set log sftp level file access
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^Subsystem\s+sftp\s+/usr/lib/openssh/sftp-server'
+    line: 'Subsystem sftp /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO'
+
+- name: Disable SSH root login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#PermitRootLogin'
+    line: 'PermitRootLogin no'
+
+- name: Disable SSH password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#PasswordAuthentication yes'
+    line: 'PasswordAuthentication no'
+
+- name: Set SSH UsePrivilegeSeparation
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    line: 'UsePrivilegeSeparation sandbox'
+
+- name: Set SSH AuthenticationMethods
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    line: 'AuthenticationMethods publickey'
+
+- name: Disable SSH short modulis for DH
+  shell: |-
+    awk '$5 >= 3071' /etc/ssh/moduli > /tmp/moduli &&
+    mv /tmp/moduli /etc/ssh/moduli    
+
+- name: Restart SSHd
+  service:
+    name: sshd
+    state: restarted

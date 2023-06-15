@@ -1,43 +1,25 @@
----
-- name: Configure apache2 & php with apparmor confinement
-  hosts: all
-  become: true
-  become_method: sudo
-  become_user: root
-  vars:
-    packages:
-      - apache2
+tasks:
+  - name: Install required packages
+    ansible.builtin.apt:
+      pkg:  
+        - apache2
+        - libapache2-mod-php8.1
+        - php
+        - php-common
+        - php8.1
+        - php8.1-cli
+        - php8.1-common
+        - php8.1-opcache
+        - php8.1-readline
+        - php-mbstring
+    state: present
 
-      - libapache2-mod-php8.1
-      - php
-      - php-common
-      - php8.1
-      - php8.1-cli
-      - php8.1-common
-      - php8.1-opcache
-      - php8.1-readline
-      - php-mbstring
+  - name: Include apache2 tasks
+    ansible.builtin.import_tasks: apache2.yml
 
-      - apparmor
-      - apparmor-notify
-      - apparmor-utils
-      - apparmor-profiles
-      - apparmor-profiles-extra
-      - libapache2-mod-apparmor
+  - name: Include php tasks
+    ansible.builtin.import_tasks: php.yml
 
-  tasks:
-    - name: Install required packages
-      ansible.builtin.apt:
-        pkg: '{{ packages }}'
-        state: present
-
-
-    - name: Include apache2 tasks
-      ansible.builtin.import_tasks: apache2.yml
-
-    - name: Include php tasks
-      ansible.builtin.import_tasks: php.yml
-
-    - name: Include application tasks
-      ansible.builtin.import_tasks: application.yml
+  - name: Include application tasks
+    ansible.builtin.import_tasks: application.yml
 

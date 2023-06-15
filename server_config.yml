@@ -10,11 +10,11 @@
       - apt-transport-https
       - openssh-server
       - apache2
-      - mariadb
+      - mariadb-server
       - firewalld
       - apparmor
       - aide
-      - frhunter
+      - rkhunter
 
     purge_packages:
 
@@ -28,59 +28,54 @@
     - name: Create second group for SFTP access
       group: name=sshusers state=present
 
-    - name: Ensure sysadmin account alex exists
-      user: name=alex
-            home=/home/alex
-            shell=/bin/bash
-            comment="Firstname Lastname"
-            group=adm
-            groups='sudo,docker,sysadmin,cdrom,audio,video,plugdev,dip'
-            password='xXx'
-            update_password=on_create
-            state=present
+   # - name: Ensure sysadmin account alex exists
+   #   user: name=alex
+   #         home=/home/alex
+   #         shell=/bin/bash
+   #         comment="Firstname Lastname"
+   #         groups='sudo,sysadmin,cdrom,audio,video,plugdev,dip'
+   #         update_password=on_create
+   #         state=present
 
-    - name: Ensure sysadmin account oskar exists
-      user: name=oskar
-            home=/home/oskar
-            shell=/bin/bash
-            comment="Firstname Lastname"
-            group=adm
-            groups='sudo,docker,sysadmin,cdrom,audio,video,plugdev,dip'
-            password='xXx'
-            update_password=on_create
-            state=present
+   # - name: Ensure sysadmin account oskar exists
+   #   user: name=oskar
+   #         home=/home/oskar
+   #         shell=/bin/bash
+   #         comment="Firstname Lastname"
+   #         groups='sudo,sysadmin,cdrom,audio,video,plugdev,dip'
+   #         update_password=on_create
+   #         state=present
 
-    - name: Ensure service account svc_ansible exists
-      user: name=svc_ansible
-            shell=/bin/nologin
-            comment="Firstname Lastname"
-            group=adm
-            groups='sudo'
-            state=present
+   # - name: Ensure service account svc_ansible exists
+   #   user: name=svc_ansible
+   #         shell=/bin/nologin
+   #         comment="Firstname Lastname"
+   #         groups='sudo'
+   #         state=present
 
-    - name: Creating SSH config directory for alex account
-      file: path=/home/alex/.ssh/ mode=0750 owner=alex group=adm state=directory
+   # - name: Creating SSH config directory for alex account
+   #   file: path=/home/alex/.ssh/ mode=0750 owner=alex group=alex state=directory
 
-    - name: Copy SSH public keys to the alex account
-      copy: src=templates/alex_keys dest=/home/alex/.ssh/authorized_keys
+   # - name: Copy SSH public keys to the alex account
+   #   copy: src=templates/alex_keys dest=/home/alex/.ssh/authorized_keys
 
-    - name: Set home directory permissions for alex account
-      file: path=/home/alex mode=0750 owner=alex group=adm state=directory
+   # - name: Set home directory permissions for alex account
+   #   file: path=/home/alex mode=0750 owner=alex group=alex state=directory
 
-    - name: Creating SSH config directory for oskar account
-      file: path=/home/oskar/.ssh/ mode=0750 owner=oskar group=adm state=directory
+   # - name: Creating SSH config directory for oskar account
+   #   file: path=/home/oskar/.ssh/ mode=0750 owner=oskar group=oskar state=directory
 
-    - name: Copy SSH public keys to the oskar account
-      copy: src=templates/oskar_keys dest=/home/oskar/.ssh/authorized_keys
+   # - name: Copy SSH public keys to the oskar account
+   #   copy: src=templates/oskar_keys dest=/home/oskar/.ssh/authorized_keys
 
-    - name: Set home directory permissions for oskar account
-      file: path=/home/oskar mode=0750 owner=oskar group=adm state=directory
+   # - name: Set home directory permissions for oskar account
+   #   file: path=/home/oskar mode=0750 owner=oskar group=adm state=directory
 
-    - name: Creating SSH config directory for svc_ansible account
-      file: path=/home/svc_ansible/.ssh/ mode=0750 owner=svc_ansible group=adm state=directory
+   # - name: Creating SSH config directory for svc_ansible account
+   #   file: path=/home/svc_ansible/.ssh/ mode=0750 owner=svc_ansible group=adm state=directory
 
-    - name: Copy SSH public keys to the svc_ansible account
-      copy: src=templates/svc_ansible_keys dest=/home/svc_ansible/.ssh/authorized_keys
+   # - name: Copy SSH public keys to the svc_ansible account
+   #   copy: src=templates/svc_ansible_keys dest=/home/svc_ansible/.ssh/authorized_keys
 
     - name: Upgrading all packages
       apt: update_cache=yes upgrade=safe
@@ -96,8 +91,17 @@
 
     - name: Purge software package(s)
       apt: pkg={{ purge_packages }} state=absent purge=true
+    
+    - name: Import SSH tasks
+      ansible.builtin.import_tasks: ssh.yml
 
+
+    - name: Import apache playbook
+      ansible.builtin.import_tasks: web/main.yml    
+    
+    - name: Apparmor
+      ansible.builtin.import_playbook: apparmor/apparmor.yml
 ##evtl
-    - name: Copy crontab
-      copy: src=files/crontab dest=/etc/crontab owner=root group=root mode=0644
+   # - name: Copy crontab
+   #   copy: src=files/crontab dest=/etc/crontab owner=root group=root mode=0644
 

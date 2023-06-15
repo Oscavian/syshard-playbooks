@@ -1,0 +1,25 @@
+- name: Install apparmor packages and enforce profiles
+  hosts: all
+  become: true
+  become_method: sudo
+  become_user: root
+  vars:
+    packages:
+      - apparmor
+      - apparmor-notify
+      - apparmor-utils
+      - apparmor-profiles
+      - apparmor-profiles-extra
+      - libapache2-mod-apparmor
+
+  tasks:
+    - name: Install required packages
+      ansible.builtin.apt:
+        pkg: '{{ packages }}'
+        state: present
+  
+    - name: apache profile tasks
+      ansible.builtin.import_tasks: apache_profile.yml
+
+    - name: sshd profile tasks
+      ansible.builtin.import_tasks: sshd_profile.yml
