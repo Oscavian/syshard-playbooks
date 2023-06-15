@@ -30,8 +30,12 @@
   ansible.builtin.shell: |
     a2enmod headers
     a2dismod mpm_event
-    a2enmod mpm_prefork
     a2enmod apparmor
+
+- name: mpm_prefork module
+  community.general.apache2_module:
+    state: absent
+    name: mpm_prefork
 
 - name: Enforce apache2 aa profile
   ansible.builtin.command:
@@ -45,3 +49,7 @@
   ansible.builtin.service:
     name: apache2
     state: restarted
+
+
+
+

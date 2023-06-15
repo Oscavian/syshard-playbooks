@@ -15,7 +15,12 @@
       - apparmor
       - aide
       - rkhunter
-
+      - apparmor
+      - apparmor-notify
+      - apparmor-utils
+      - apparmor-profiles
+      - apparmor-profiles-extra
+      - libapache2-mod-apparmor
     purge_packages:
 
   tasks:
