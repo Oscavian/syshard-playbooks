@@ -7,7 +7,7 @@
     owner: root
     group: root
 
-  - name: Enforce sshd aa profile
+- name: Enforce sshd aa profile
   ansible.builtin.command:
     cmd: aa-enforce /etc/apparmor.d/usr.sbin.sshd
 

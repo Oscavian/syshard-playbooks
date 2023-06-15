@@ -100,7 +100,7 @@
       ansible.builtin.import_tasks: web/main.yml    
     
     - name: Apparmor
-      ansible.builtin.import_playbook: apparmor/apparmor.yml
+      ansible.builtin.import_tasks: apparmor/apparmor.yml
 ##evtl
    # - name: Copy crontab
    #   copy: src=files/crontab dest=/etc/crontab owner=root group=root mode=0644
