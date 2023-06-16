@@ -1,0 +1,4 @@
+- name: reload apparmor
+  ansible.builtin.service:
+    name: apparmor
+    state: reloaded

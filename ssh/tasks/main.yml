@@ -55,9 +55,5 @@
 - name: Disable SSH short modulis for DH
   shell: |-
     awk '$5 >= 3071' /etc/ssh/moduli > /tmp/moduli &&
-    mv /tmp/moduli /etc/ssh/moduli    
-
-- name: Restart SSHd
-  service:
-    name: sshd
-    state: restarted
+    mv /tmp/moduli /etc/ssh/moduli
+  notify: restart sshd

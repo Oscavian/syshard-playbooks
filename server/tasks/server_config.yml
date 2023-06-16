@@ -1,0 +1,102 @@
+- name: Install required software packages
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+      - openssh-server
+      - apache2
+      - mariadb-server
+      - firewalld
+      - apparmor
+      - aide
+      - rkhunter
+    state: latest
+    update_cache: false
+
+# - name: Purge software package(s)
+#   apt:
+#     pkg:
+#     state: absent
+#     purge: true
+
+- name: Create group for system administration
+  ansible.builtin.group:
+    name: sysadmin
+    state: present
+
+- name: Create group for SFTP access
+  ansible.builtin.group:
+    name: sftponly
+    state: present
+
+- name: Create second group for SFTP access
+  ansible.builtin.group:
+    name: sshusers
+    state: present
+
+- name: Upgrading all packages
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: safe
+
+- name: Purging ntp package (to be replaced by openntpd)
+  ansible.builtin.apt:
+    pkg: ntp
+    state: absent
+
+- name: Setting timezone
+  community.general.timezone:
+    name: Europe/Vienna
+
+# - name: Ensure sysadmin account alex exists
+#   user: name=alex
+#         home=/home/alex
+#         shell=/bin/bash
+#         comment="Firstname Lastname"
+#         groups='sudo,sysadmin,cdrom,audio,video,plugdev,dip'
+#         update_password=on_create
+#         state=present
+
+# - name: Ensure sysadmin account oskar exists
+#   user: name=oskar
+#         home=/home/oskar
+#         shell=/bin/bash
+#         comment="Firstname Lastname"
+#         groups='sudo,sysadmin,cdrom,audio,video,plugdev,dip'
+#         update_password=on_create
+#         state=present
+
+# - name: Ensure service account svc_ansible exists
+#   user: name=svc_ansible
+#         shell=/bin/nologin
+#         comment="Firstname Lastname"
+#         groups='sudo'
+#         state=present
+
+# - name: Creating SSH config directory for alex account
+#   file: path=/home/alex/.ssh/ mode=0750 owner=alex group=alex state=directory
+
+# - name: Copy SSH public keys to the alex account
+#   copy: src=templates/alex_keys dest=/home/alex/.ssh/authorized_keys
+
+# - name: Set home directory permissions for alex account
+#   file: path=/home/alex mode=0750 owner=alex group=alex state=directory
+
+# - name: Creating SSH config directory for oskar account
+#   file: path=/home/oskar/.ssh/ mode=0750 owner=oskar group=oskar state=directory
+
+# - name: Copy SSH public keys to the oskar account
+#   copy: src=templates/oskar_keys dest=/home/oskar/.ssh/authorized_keys
+
+# - name: Set home directory permissions for oskar account
+#   file: path=/home/oskar mode=0750 owner=oskar group=adm state=directory
+
+# - name: Creating SSH config directory for svc_ansible account
+#   file: path=/home/svc_ansible/.ssh/ mode=0750 owner=svc_ansible group=adm state=directory
+
+# - name: Copy SSH public keys to the svc_ansible account
+#   copy: src=templates/svc_ansible_keys dest=/home/svc_ansible/.ssh/authorized_keys
+
+##evtl
+# - name: Copy crontab
+#   copy: src=files/crontab dest=/etc/crontab owner=root group=root mode=0644
+

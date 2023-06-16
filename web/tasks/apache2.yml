@@ -1,0 +1,31 @@
+---
+- name: Copy apache2 config
+  ansible.builtin.copy:
+    src: apache2/
+    dest: /etc/apache2/
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Configure apache2 modules
+  community.general.apache2_module:
+    name: '{{ item.module }}'
+    state: '{{ item.state }}'
+    warn_mpm_absent: false
+    ignore_configcheck: true
+    force: true
+  loop:
+    - module: mpm_event
+      state: absent
+    - module: mpm_worker
+      state: absent
+    - module: mpm_prefork
+      state: present
+    - module: headers
+      state: present
+    - module: autoindex
+      state: absent
+    - module: apparmor
+      state: present
+  notify: restart apache2
+  ignore_errors: true

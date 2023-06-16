@@ -2,6 +2,7 @@
 - name: Copy sshd apparmor profile
   ansible.builtin.copy:
     src: /usr/share/apparmor/extra-profiles/usr.sbin.sshd
+    remote_src: true
     dest: /etc/apparmor.d/usr.sbin.sshd
     mode: '0644'
     owner: root
@@ -14,8 +15,4 @@
 - name: Reload sshd aa profile
   ansible.builtin.command:
     cmd: apparmor_parser -r /etc/apparmor.d/usr.sbin.sshd
-
-- name: Restart sshd service
-  ansible.builtin.service:
-    name: sshd
-    state: restarted
+  notify: restart sshd

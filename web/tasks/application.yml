@@ -1,14 +1,18 @@
+# PHPSysinfo as demo application
+
 - name: Download phpsysinfo
   ansible.builtin.get_url:
     url: "https://github.com/phpsysinfo/phpsysinfo/archive/refs/tags/v3.4.2.tar.gz"
     dest: /var/www/v3.4.2.tar.gz
+    mode: '0644'
 
-- name: create directory
+- name: Create directory
   ansible.builtin.file:
     path: /var/www/phpsysinfo
     state: directory
     owner: root
     group: root
+    mode: '0644'
 
 - name: Extract archive
   ansible.builtin.unarchive:
@@ -16,8 +20,9 @@
     src: /var/www/v3.4.2.tar.gz
     dest: /var/www/
 
-- name: init config
+- name: Init config
   ansible.builtin.shell: |
     mv /var/www/phpsysinfo-3.4.2/* /var/www/html
-    rmdir /var/www/phpsysinfo-3.4.2
+    rm -rf /var/www/phpsysinfo-3.4.2
+    rm /var/www/html/index.html
     mv /var/www/html/phpsysinfo.ini.new /var/www/html/phpsysinfo.ini

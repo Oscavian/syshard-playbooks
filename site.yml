@@ -1,0 +1,12 @@
+---
+- name: Run configuration
+  hosts: all
+  become: true
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - server
+    - ssh
+    - web
+    - apparmor

@@ -1,6 +1,6 @@
 - name: Install required packages
   ansible.builtin.apt:
-    pkg: 
+    pkg:
       - apparmor
       - apparmor-notify
       - apparmor-utils
@@ -8,9 +8,11 @@
       - apparmor-profiles-extra
       - libapache2-mod-apparmor
     state: present
-  
-- name: apache profile tasks
-  ansible.builtin.import_tasks: apache_profile.yml
 
-- name: sshd profile tasks
+- name: Apache profile tasks
+  ansible.builtin.import_tasks: apache_profile.yml
+  notify: reload apparmor
+
+- name: Sshd profile tasks
   ansible.builtin.import_tasks: sshd_profile.yml
+  notify: reload apparmor
