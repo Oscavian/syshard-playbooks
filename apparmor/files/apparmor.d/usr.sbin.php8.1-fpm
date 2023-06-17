@@ -27,7 +27,7 @@
     /run/php/php8.1-fpm.sock rw,
     /tmp/** rwk,
     /usr/share/zoneinfo/** r,
-    /var/www/html/phpsysinfo/** rw, #allow access to the sitea's own directory
+    /var/www/html/webapp/** rw, #allow access to the sitea's own directory
 
   }
 }
