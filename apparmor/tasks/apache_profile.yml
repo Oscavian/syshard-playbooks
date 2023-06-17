@@ -9,19 +9,21 @@
     owner: root
     group: root
 
-- name: Copy apache2 apparmor subprofiles
-  ansible.builtin.copy:
-    src: apparmor.d/apache2.d/
-    dest: /etc/apparmor.d/apache2.d/
-    mode: '0644'
-    owner: root
-    group: root
-
-- name: Enforce apache2 profile
-  ansible.builtin.command:
-    cmd: aa-enforce /etc/apparmor.d/usr.sbin.apache2
+# - name: Copy apache2 apparmor subprofiles
+#   ansible.builtin.copy:
+#     src: apparmor.d/apache2.d/
+#     dest: /etc/apparmor.d/apache2.d/
+#     mode: '0644'
+#     owner: root
+#     group: root
 
 - name: Reload apache2 aa profile
   ansible.builtin.command:
     cmd: apparmor_parser -r /etc/apparmor.d/usr.sbin.apache2
+  notify: reload apparmor
+
+- name: Enforce apache2 profile
+  ansible.builtin.command:
+    cmd: aa-enforce /etc/apparmor.d/usr.sbin.apache2
   notify: restart apache2
+
