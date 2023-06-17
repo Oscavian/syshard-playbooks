@@ -4,7 +4,7 @@
   ansible.builtin.get_url:
     url: "https://github.com/phpsysinfo/phpsysinfo/archive/refs/tags/v3.4.2.tar.gz"
     dest: /var/www/v3.4.2.tar.gz
-    mode: '0644'
+    mode: '0755'
 
 - name: Create directory
   ansible.builtin.file:
@@ -12,7 +12,7 @@
     state: directory
     owner: root
     group: root
-    mode: '0644'
+    mode: '0755'
 
 - name: Extract archive
   ansible.builtin.unarchive:
@@ -22,7 +22,11 @@
 
 - name: Init config
   ansible.builtin.shell: |
-    mv /var/www/phpsysinfo-3.4.2/* /var/www/html
+    mv /var/www/phpsysinfo-3.4.2/* /var/www/phpsysinfo
     rm -rf /var/www/phpsysinfo-3.4.2
-    rm /var/www/html/index.html
-    mv /var/www/html/phpsysinfo.ini.new /var/www/html/phpsysinfo.ini
+    mv /var/www/phpsysinfo/phpsysinfo.ini.new /var/www/phpsysinfo/phpsysinfo.ini
+    echo '<?php phpinfo(); ?>' > /var/www/phpsysinfo/info.php
+
+# - name: create phpinfo file
+#   ansible.builtin.shell: |
+#     echo '<?php phpinfo(); ?>' > /var/www/html/info.php

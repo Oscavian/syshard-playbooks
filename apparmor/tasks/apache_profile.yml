@@ -17,7 +17,7 @@
     owner: root
     group: root
 
-- name: Enforce apache2 aa profile
+- name: Enforce apache2 profile
   ansible.builtin.command:
     cmd: aa-enforce /etc/apparmor.d/usr.sbin.apache2
 
@@ -25,4 +25,3 @@
   ansible.builtin.command:
     cmd: apparmor_parser -r /etc/apparmor.d/usr.sbin.apache2
   notify: restart apache2
-

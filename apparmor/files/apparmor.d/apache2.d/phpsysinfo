@@ -10,8 +10,14 @@
     include <abstractions/php5>
     include <abstractions/python>
 
-    /var/www/html/             rw,
-    /var/www/html/**           rw,
+    /var/www/phpsysinfo/             rw,
+    /var/www/phpsysinfo/             rw,
+
+    unix (listen, accept, connect, send, receive),
+
+    # @{run}/php/php-fpm.sock mrwlkux,
+    # @{run}/php/php8.1-fpm.sock mrwlkux,
+    
     /var/log/apache2/*.log     w,
     /{,usr/}bin/dash ixr,
     /{,usr/}bin/df ixr,

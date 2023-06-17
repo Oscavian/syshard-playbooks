@@ -2,24 +2,26 @@
   ansible.builtin.apt:
     pkg:
       - apache2
-      - libapache2-mod-php8.1
+      - php8.1
+      - php8.1-fpm
       - libapache2-mod-apparmor
       - php-xml
-      - php
-      - php-common
-      - php8.1
-      - php8.1-cli
-      - php8.1-common
-      - php8.1-opcache
-      - php8.1-readline
       - php-mbstring
     state: present
 
-- name: Include apache2 tasks
-  ansible.builtin.import_tasks: apache2.yml
+- name: Purge conflicting packages
+  ansible.builtin.apt:
+    pkg:
+      - libapache2-mod-php8.1
+      - php-fpm
+    state: absent
+    purge: true
 
 - name: Include php tasks
   ansible.builtin.import_tasks: php.yml
+
+- name: Include apache2 tasks
+  ansible.builtin.import_tasks: apache2.yml
 
 - name: Include application tasks
   ansible.builtin.import_tasks: application.yml

@@ -16,16 +16,34 @@
     force: true
   loop:
     - module: mpm_event
-      state: absent
+      state: present
     - module: mpm_worker
       state: absent
     - module: mpm_prefork
-      state: present
+      state: absent
     - module: headers
       state: present
     - module: autoindex
       state: absent
     - module: apparmor
       state: present
-  notify: restart apache2
+    - module: proxy # for php-fpm
+      state: present
+    - module: proxy_fcgi # for php-fpm
+      state: present
   ignore_errors: true
+  notify: restart apache2
+
+- name: Copy virtual host config
+  ansible.builtin.copy:
+    src: apache2/sites-available/phpsysinfo.conf
+    dest: /etc/apache2/sites-available/phpsysinfo.conf
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Enable virtual host
+  ansible.builtin.shell: |
+    a2ensite phpsysinfo.conf
+    a2dissite 000-default.conf
+  notify: restart apache2

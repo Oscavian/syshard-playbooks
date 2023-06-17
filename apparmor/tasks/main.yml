@@ -9,9 +9,10 @@
       - libapache2-mod-apparmor
     state: present
 
-- name: Apache profile tasks
-  ansible.builtin.import_tasks: apache_profile.yml
-  notify: reload apparmor
+# apache profile buggy with php-fpm, dunno...
+# - name: Apache profile tasks
+#   ansible.builtin.import_tasks: apache_profile.yml
+#   notify: reload apparmor
 
 - name: Sshd profile tasks
   ansible.builtin.import_tasks: sshd_profile.yml

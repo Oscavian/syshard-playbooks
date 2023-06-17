@@ -2,3 +2,8 @@
   ansible.builtin.service:
     name: apache2
     state: restarted
+
+- name: restart php-fpm
+  ansible.builtin.service:
+    name: php8.1-fpm
+    state: restarted
