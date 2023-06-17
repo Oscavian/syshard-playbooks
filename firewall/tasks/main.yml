@@ -1,0 +1,23 @@
+- name: drop all ICMP requests and other traffic
+  ansible.posix.firewalld:
+    zone: public
+    state: enabled
+    permanent: true
+    target: DROP
+  notify: reload firewalld
+
+- name: permit SSH traffic for public zone
+  ansible.posix.firewalld:
+    service: ssh
+    zone: public
+    permanent: true
+    state: enabled
+  notify: reload firewalld
+
+- name: permit HTTPS requests to the webserver
+  ansible.posix.firewalld:
+    service: http
+    zone: public
+    permanent: true
+    state: enabled
+  notify: reload firewalld

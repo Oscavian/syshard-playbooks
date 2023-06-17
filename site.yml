@@ -10,3 +10,4 @@
     - ssh
     - web
     - apparmor
+    - firewall

@@ -9,6 +9,7 @@
       - apparmor
       - aide
       - rkhunter
+      - openntpd
     state: latest
     update_cache: false
 
