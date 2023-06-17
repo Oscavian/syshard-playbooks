@@ -9,6 +9,7 @@
       - libapache2-mod-apparmor
     state: present
 
+# apache profile buggy with php-fpm, dunno...
 - name: Apache profile tasks
   ansible.builtin.import_tasks: apache_profile.yml
   notify: reload apparmor

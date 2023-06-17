@@ -1,0 +1,33 @@
+#include <tunables/global>
+
+/usr/sbin/php-fpm7.0 flags=(complain) {
+  #include <abstractions/base>
+  #include <abstractions/php5>
+
+  capability setgid,
+
+  /etc/php/7.0/** r,
+  /run/php/** rw,
+  /tmp/** rw,
+  /usr/sbin/php-fpm7.0 mr,
+  /var/lib/php/sessionss/** rw,
+  /var/www/html/** rw,
+
+  ^sitea flags=(complain) {
+    #include <abstractions/base>
+    capability setgid,
+
+    # deny /bin/dash r, #deny access to dash
+    # deny /var/www/html/sensitivesite/* rw, #deny access to a sensitive site
+
+    /dev/null a,
+    /etc/ld.so.cache r,
+    /lib/x86_64-linux-gnu/ld-*.so r,
+    /lib/x86_64-linux-gnu/libc-*.so r,
+    /run/php/php8.1-fpm.sock rw,
+    /tmp/** rwk,
+    /usr/share/zoneinfo/** r,
+    /var/www/html/phpsysinfo/** rw, #allow access to the sitea's own directory
+
+  }
+}
