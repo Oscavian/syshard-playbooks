@@ -1,0 +1,17 @@
+# Copy sshd profile
+- name: Copy php apparmor profile
+  ansible.builtin.copy:
+    src: apparmor.d/usr.sbin.php8.1-fpm
+    dest: /etc/apparmor.d/usr.sbin.php8.1-fpm
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: Enforce php aa profile
+  ansible.builtin.command:
+    cmd: aa-enforce /etc/apparmor.d/usr.sbin.php8.1-fpm
+
+- name: Reload php aa profile
+  ansible.builtin.command:
+    cmd: apparmor_parser -r /etc/apparmor.d/usr.sbin.php8.1-fpm
+  notify: restart php-fpm

@@ -17,3 +17,8 @@
 - name: Sshd profile tasks
   ansible.builtin.import_tasks: sshd_profile.yml
   notify: reload apparmor
+
+- name: PHP-FPM profile tasks
+  ansible.builtin.import_tasks: php8.1-fpm_profile.yml
+  notify: reload apparmor
+
