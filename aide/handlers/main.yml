@@ -1,0 +1,9 @@
+---
+- name: Init aide db
+  ansible.builtin.command:
+    aide --config=/etc/aide/aide.conf --init
+  when: "not aide_db_check.stat.exists"
+
+- name: Rename new aide db
+  ansible.builtin.command:
+    cmd: mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db

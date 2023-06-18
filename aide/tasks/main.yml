@@ -1,0 +1,55 @@
+- name: Ensure aide is installed
+  ansible.builtin.apt:
+    pkg: aide
+    state: present
+
+- name: Ensure aide directories exists
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+  with_items:
+    - "/var/log/aide"
+    - "/var/lib/aide"
+
+- name: Check for existing aide database
+  ansible.builtin.stat:
+    path: "/var/lib/aide/aide.db"
+  register: "aide_db_check"
+  changed_when: "not aide_db_check.stat.exists"
+  notify:
+    - "Init aide db"
+    - "Rename new aide db"
+
+- name: Configure aide
+  ansible.builtin.copy:
+    src: aide.conf
+    dest: /etc/aide/aide.conf
+    mode: '0644'
+    owner: root
+    group: root
+    validate: aide -D -c %s
+
+- name: Setup aide check in crontab
+  ansible.builtin.cron:
+    name: aide scheduled db check
+    backup: true
+    user: root
+    state: present
+    minute: '*'
+    hour: '*'
+    day: '1'
+    month: '*'
+    weekday: '*'
+    job: aide --config=/etc/aide/aide.conf --check
+
+- name: Update aide database
+  ansible.builtin.command: aide --config=/etc/aide/aide.conf --update
+  register: aide_update
+  failed_when: "aide_update.rc > 7"
+  when:
+    - "aide_db_check.stat.exists"
+  notify:
+    - Rename new aide db

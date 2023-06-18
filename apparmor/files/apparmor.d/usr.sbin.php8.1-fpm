@@ -1,33 +1,37 @@
 #include <tunables/global>
 
-/usr/sbin/php-fpm7.0 flags=(complain) {
+/usr/sbin/php-fpm8.1 flags=(attach_disconnected) {
+  #include <abstractions/apache2-common>
   #include <abstractions/base>
   #include <abstractions/php5>
 
-  capability setgid,
+  capability,
 
-  /etc/php/7.0/** r,
-  /run/php/** rw,
-  /tmp/** rw,
-  /usr/sbin/php-fpm7.0 mr,
-  /var/lib/php/sessionss/** rw,
-  /var/www/html/** rw,
+  # allow unix socket comm
+  network unix,
 
-  ^sitea flags=(complain) {
-    #include <abstractions/base>
-    capability setgid,
+  # deny any other network comm
+  audit deny network inet,
 
-    # deny /bin/dash r, #deny access to dash
-    # deny /var/www/html/sensitivesite/* rw, #deny access to a sensitive site
+  # php-fpm needs to receive calls from apache2
+  unix (receive),
+  unix peer=(label=@{profile_name}),
 
-    /dev/null a,
-    /etc/ld.so.cache r,
-    /lib/x86_64-linux-gnu/ld-*.so r,
-    /lib/x86_64-linux-gnu/libc-*.so r,
-    /run/php/php8.1-fpm.sock rw,
-    /tmp/** rwk,
-    /usr/share/zoneinfo/** r,
-    /var/www/html/phpsysinfo/** rw, #allow access to the sitea's own directory
+  /etc/group r,
+  /etc/nsswitch.conf r,
+  /etc/passwd r,
+  /etc/php/8.1/** r,
+  /proc/filesystems r,
+  
+  # allow access to socket
+  /run/php/php8.1-fpm.pid rw,
+  /run/php/php8.1-fpm.sock rw,
+  
+  /run/systemd/notify w,
+  /tmp/ rw,
+  /usr/sbin/php-fpm8.1 mrPix,
+  /var/log/php8.1-fpm.log w,
 
-  }
+  # only allow read access to web root
+  /var/www/** r,
 }

@@ -36,14 +36,14 @@
 
 - name: Copy virtual host config
   ansible.builtin.copy:
-    src: apache2/sites-available/phpsysinfo.conf
-    dest: /etc/apache2/sites-available/phpsysinfo.conf
+    src: apache2/sites-available/webapp.conf
+    dest: /etc/apache2/sites-available/webapp.conf
     mode: '0755'
     owner: root
     group: root
 
 - name: Enable virtual host
   ansible.builtin.shell: |
-    a2ensite phpsysinfo.conf
+    a2ensite webapp.conf
     a2dissite 000-default.conf
   notify: restart apache2

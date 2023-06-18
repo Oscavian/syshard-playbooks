@@ -3,13 +3,13 @@
   ansible.builtin.copy:
     src: files/webapp.tar.gz
     dest: /var/www/
-    mode: '0755'
+    mode: '0644'
     owner: root
     group: root
 
 - name: Create directory
   ansible.builtin.file:
-    path: /var/www/phpsysinfo
+    path: /var/www/webapp
     state: directory
     owner: root
     group: root
