@@ -57,3 +57,9 @@
     awk '$5 >= 3071' /etc/ssh/moduli > /tmp/moduli &&
     mv /tmp/moduli /etc/ssh/moduli
   notify: restart sshd
+
+- name: Set AllowGroups to sshusers
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    line: 'AllowGroups sshusers'
