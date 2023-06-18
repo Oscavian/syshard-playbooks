@@ -1,0 +1,4 @@
+- name: reload shadowsocks
+  ansible.builtin.service:
+    name: shadowsocks-libev
+    state: reloaded

@@ -21,3 +21,12 @@
     permanent: true
     state: enabled
   notify: reload firewalld
+
+- name: permit tcp traffic on port 8388 for shadowsocks
+  ansible.posix.firewalld:
+    rich_rule: rule family=ipv4 port=8388 protocol=tcp
+    zone: public
+    permanent: true
+    immediate: true
+    state: enabled
+  notify: reload firewalld

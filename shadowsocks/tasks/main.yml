@@ -2,3 +2,11 @@
   ansible.builtin.apt:
     pkg: shadowsocks-libev
     state: present
+
+- name: copy config file
+  ansible.builtin.copy:
+    src: files/config.json
+    dest: /etc/shadowsocks-libev/config.json
+    mode: '0644'
+    owner: root
+    group: root
