@@ -11,4 +11,5 @@
     - web
     - apparmor
     - firewall
-    - aide
+  #  - aide
+    - rkhunter

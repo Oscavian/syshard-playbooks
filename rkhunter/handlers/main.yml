@@ -1,2 +1,2 @@
 - name: update rkhunter
-  ansible.builtin.command: /usr/bin/rkhunter --propupd && systemctl restart rkhunter
+  ansible.builtin.command: /usr/bin/rkhunter --propupd
