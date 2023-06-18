@@ -1,0 +1,19 @@
+- name: copy task file
+  ansible.builtin.copy:
+    src: files/rkhunter
+    dest: /etc/default/rkhunter
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: copy config file
+  ansible.builtin.copy:
+    src: files/rkhunter.conf
+    dest: /etc/rkhunter.conf
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: update rkhunter database
+  ansible.builtin.command: /usr/bin/rkhunter --update
+  notify: update rkhunter
