@@ -1,10 +1,10 @@
-# - name: Copy php config
-#   ansible.builtin.copy:
-#     src: php/
-#     dest: /etc/php/
-#     owner: root
-#     group: root
-#     mode: '0644'
+- name: Copy php.ini
+  ansible.builtin.copy:
+    src: php/8.1/fpm/php.ini
+    dest: /etc/php/8.1/fpm/php.ini
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: Start php-fpm service
   ansible.builtin.service:

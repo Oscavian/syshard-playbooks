@@ -20,6 +20,8 @@
   /etc/group r,
   /etc/nsswitch.conf r,
   /etc/passwd r,
+
+  # allow access to configuration
   /etc/php/8.1/** r,
   /proc/filesystems r,
   
@@ -34,4 +36,7 @@
 
   # only allow read access to web root
   /var/www/** r,
+
+  # allow access to session paths & tpm_upload
+  /var/lib/php/** rw
 }
