@@ -38,5 +38,6 @@
   /var/www/** r,
 
   # allow access to session paths & tpm_upload
-  /var/lib/php/** rw
+  /var/lib/php/** rw,
+
 }

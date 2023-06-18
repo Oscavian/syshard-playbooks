@@ -15,8 +15,6 @@
     ignore_configcheck: true
     force: true
   loop:
-    - module: mpm_event
-      state: present
     - module: mpm_worker
       state: absent
     - module: mpm_prefork
