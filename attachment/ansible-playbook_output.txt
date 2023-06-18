@@ -1,0 +1,202 @@
+alex@MacBook-Pro:~/ansible/syshard-playbooks% ansible-playbook site.yml --ask-become-pass
+BECOME password: 
+
+PLAY [Run configuration] ****************************************************************
+
+TASK [Gathering Facts] ******************************************************************
+ok: [185.232.71.69]
+
+TASK [server : Install required software packages] **************************************
+ok: [185.232.71.69]
+
+TASK [server : Purge software package(s)] ***********************************************
+ok: [185.232.71.69]
+
+TASK [server : Create group for SSH & SFTP access] **************************************
+ok: [185.232.71.69]
+
+TASK [server : Upgrading all packages] **************************************************
+ok: [185.232.71.69]
+
+TASK [server : Purging ntp package (to be replaced by openntpd)] ************************
+ok: [185.232.71.69]
+
+TASK [server : Setting timezone] ********************************************************
+ok: [185.232.71.69]
+
+TASK [server : Ensure sysadmin account alex exists] *************************************
+ok: [185.232.71.69]
+
+TASK [server : Ensure sysadmin account oskar exists] ************************************
+ok: [185.232.71.69]
+
+TASK [server : Creating SSH config directory for alex account] **************************
+ok: [185.232.71.69]
+
+TASK [server : Copy SSH public keys to the alex account] ********************************
+ok: [185.232.71.69]
+
+TASK [server : Creating SSH config directory for oskar account] *************************
+ok: [185.232.71.69]
+
+TASK [server : Copy SSH public keys to the oskar account] *******************************
+ok: [185.232.71.69]
+
+TASK [ssh : Set SSH KexAlgorithms] ******************************************************
+ok: [185.232.71.69]
+
+TASK [ssh : Set SSH Ciphers] ************************************************************
+ok: [185.232.71.69]
+
+TASK [ssh : Set SSH MACs] ***************************************************************
+ok: [185.232.71.69]
+
+TASK [ssh : Set SSH loglevel to verbose] ************************************************
+ok: [185.232.71.69]
+
+TASK [ssh : Set log sftp level file access] *********************************************
+ok: [185.232.71.69]
+
+TASK [ssh : Disable SSH root login] *****************************************************
+ok: [185.232.71.69]
+
+TASK [ssh : Disable SSH password authentication] ****************************************
+ok: [185.232.71.69]
+
+TASK [ssh : Set SSH UsePrivilegeSeparation] *********************************************
+ok: [185.232.71.69]
+
+TASK [ssh : Set SSH AuthenticationMethods] **********************************************
+ok: [185.232.71.69]
+
+TASK [ssh : Disable SSH short modulis for DH] *******************************************
+changed: [185.232.71.69]
+
+TASK [ssh : Set AllowGroups to sshusers] ************************************************
+ok: [185.232.71.69]
+
+TASK [web : Install required packages] **************************************************
+ok: [185.232.71.69]
+
+TASK [web : Purge conflicting packages] *************************************************
+ok: [185.232.71.69]
+
+TASK [web : Copy php.ini] ***************************************************************
+ok: [185.232.71.69]
+
+TASK [web : Start php-fpm service] ******************************************************
+ok: [185.232.71.69]
+
+TASK [web : Copy apache2 config] ********************************************************
+changed: [185.232.71.69]
+
+TASK [web : Configure apache2 modules] **************************************************
+ok: [185.232.71.69] => (item={'module': 'mpm_worker', 'state': 'absent'})
+ok: [185.232.71.69] => (item={'module': 'mpm_prefork', 'state': 'absent'})
+ok: [185.232.71.69] => (item={'module': 'headers', 'state': 'present'})
+ok: [185.232.71.69] => (item={'module': 'autoindex', 'state': 'absent'})
+ok: [185.232.71.69] => (item={'module': 'apparmor', 'state': 'present'})
+ok: [185.232.71.69] => (item={'module': 'proxy', 'state': 'present'})
+ok: [185.232.71.69] => (item={'module': 'proxy_fcgi', 'state': 'present'})
+
+TASK [web : Copy virtual host config] ***************************************************
+changed: [185.232.71.69]
+
+TASK [web : Enable virtual host] ********************************************************
+changed: [185.232.71.69]
+
+TASK [web : Copy webapp] ****************************************************************
+ok: [185.232.71.69]
+
+TASK [web : Create directory] ***********************************************************
+ok: [185.232.71.69]
+
+TASK [web : Extract archive] ************************************************************
+ok: [185.232.71.69]
+
+TASK [apparmor : Install required packages] *********************************************
+ok: [185.232.71.69]
+
+TASK [apparmor : Copy apache2 apparmor profile] *****************************************
+ok: [185.232.71.69]
+
+TASK [apparmor : Reload apache2 aa profile] *********************************************
+changed: [185.232.71.69]
+
+TASK [apparmor : Enforce apache2 profile] ***********************************************
+changed: [185.232.71.69]
+
+TASK [apparmor : Copy sshd apparmor profile] ********************************************
+ok: [185.232.71.69]
+
+TASK [apparmor : Enforce sshd aa profile] ***********************************************
+changed: [185.232.71.69]
+
+TASK [apparmor : Reload sshd aa profile] ************************************************
+changed: [185.232.71.69]
+
+TASK [apparmor : Copy php apparmor profile] *********************************************
+ok: [185.232.71.69]
+
+TASK [apparmor : Enforce php aa profile] ************************************************
+changed: [185.232.71.69]
+
+TASK [apparmor : Reload php aa profile] *************************************************
+changed: [185.232.71.69]
+
+TASK [rkhunter : Copy task file] ********************************************************
+ok: [185.232.71.69]
+
+TASK [rkhunter : Copy config file] ******************************************************
+ok: [185.232.71.69]
+
+TASK [rkhunter : Update rkhunter database] **********************************************
+changed: [185.232.71.69]
+
+TASK [shadowsocks : Install required packages] ******************************************
+ok: [185.232.71.69]
+
+TASK [shadowsocks : copy config file] ***************************************************
+ok: [185.232.71.69]
+
+TASK [firewall : drop all ICMP requests and other traffic] ******************************
+ok: [185.232.71.69]
+
+TASK [firewall : permit SSH traffic for public zone] ************************************
+ok: [185.232.71.69]
+
+TASK [firewall : permit HTTPS requests to the webserver] ********************************
+ok: [185.232.71.69]
+
+TASK [firewall : permit tcp traffic on port 8388 for shadowsocks] ***********************
+ok: [185.232.71.69]
+
+TASK [lynis : Install required packages] ************************************************
+changed: [185.232.71.69]
+
+TASK [lynis : Copy Lynis default configuration] *****************************************
+changed: [185.232.71.69]
+
+TASK [lynis : Run Lynis system audit] ***************************************************
+changed: [185.232.71.69]
+
+TASK [lynis : Check if Lynis report exists] *********************************************
+ok: [185.232.71.69]
+
+RUNNING HANDLER [ssh : restart sshd] ****************************************************
+changed: [185.232.71.69]
+
+RUNNING HANDLER [web : restart apache2] *************************************************
+changed: [185.232.71.69]
+
+RUNNING HANDLER [web : restart php-fpm] *************************************************
+changed: [185.232.71.69]
+
+RUNNING HANDLER [apparmor : reload apparmor] ********************************************
+changed: [185.232.71.69]
+
+RUNNING HANDLER [rkhunter : update rkhunter] ********************************************
+changed: [185.232.71.69]
+
+PLAY RECAP ******************************************************************************
+185.232.71.69              : ok=63   changed=19   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

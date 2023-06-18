@@ -4,7 +4,6 @@
       - apt-transport-https
       - openssh-server
       - apache2
-      - mariadb-server
       - firewalld
       - apparmor
       - aide
@@ -13,11 +12,14 @@
     state: latest
     update_cache: false
 
-# - name: Purge software package(s)
-#   apt:
-#     pkg:
-#     state: absent
-#     purge: true
+- name: Purge software package(s)
+  apt:
+    pkg:
+      - mariadb-server
+    autoremove: true
+    autoclean: true
+    state: absent
+    purge: true
 
 - name: Create group for SSH & SFTP access
   ansible.builtin.group:
