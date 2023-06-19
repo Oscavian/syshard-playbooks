@@ -10,7 +10,7 @@
     - ssh
     - web
     - apparmor
-  #  - aide
+    - aide
     - rkhunter
     - shadowsocks
     - firewall
