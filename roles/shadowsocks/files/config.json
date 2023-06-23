@@ -1,8 +1,0 @@
-{
-    "server":"185.232.71.69",
-    "server_port":8388,
-    "password":"kkVqwkTR!M#d48Kbw.r]+5]=",
-    "timeout":300,
-    "method":"aes-256-cfb",
-    "fast_open": true
-}
